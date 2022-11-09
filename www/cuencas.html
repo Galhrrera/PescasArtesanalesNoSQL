@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cuencas</title>
+    <script type="text/javascript" src="/eel.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <span class="logo-icon">
+                <img src="./img/aunap.png" alt="Aunap_logo">
+            </span>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li class="opt_nav"><a href="./pescas.html" class="opt_a_nav">PESCAS</a></li>
+                <li class="opt_nav"><a href="./metodos.html" class="opt_a_nav">MÉTODOS DE PESCA</a></li>
+                <li class="opt_nav"><a href="./cuencas.html" class="opt_a_nav">CUENCAS HIDROGRÁFICAS</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal_content">
+            <span id="close" class="close_modal">&times;</span>
+            <h2 id="modal_text">
+            </h2>
+        </div>
+    </div>
+    <div id="content" class="content">
+        <h1 id="titulo"></h1>
+        <div class="crud_opts">
+            <div class="create_opt" id="create_opt">
+                <p class="crud_title">CREAR</p>
+                <!--<hr>-->
+                <div class="box">
+                    <h4>Nombre de la cuenca</h4>
+                    <input type="text" class="crud_input" id="create_name" placeholder="Ej: Río atrato">
+                </div>
+                <button class="crud_btn crud_create">Agregar</button>
+            </div>
+            <div class="update_opt" id="update_opt">
+                <p class="crud_title">ACTUALIZAR</p>
+                <hr>
+                <div class="box">
+                    <h4>Seleccione la cuenca que desea actualizar</h4>
+                    <select id="update_id" class="crud_select"></select>
+                </div>
+                <div class="box">
+                    <h4>Nuevo nombre de la cuenca</h4>
+                    <input type="text" class="crud_input" id="update_name" placeholder="Ej: Río atrato">
+                </div>
+                <button class="crud_btn crud_update">Actualizar</button>
+            </div>
+            <div class="delete_opt" id="delete_opt">
+                <p class="crud_title">ELIMINAR</p>
+                <hr>
+                <div class="box">
+                    <h4>Seleccione la cuenca que desea eliminar</h4>
+                    <select id="delete_id" class="crud_select"></select>
+                </div>
+                <button class="crud_btn crud_delete">Eliminar</button>
+            </div>
+        </div>
+        <div class="crud_menu">
+            <button class="btn_crud_menu create active" id="btn_create">CREATE</button>
+            <button class="btn_crud_menu update" id="btn_update">UPDATE</button>
+            <button class="btn_crud_menu delete" id="btn_delete">DELETE</button>
+        </div>
+        <div class="tables">
+            <table id="data" class="table_content"></table>
+        </div>
+    </div>
+
+</body>
+<script src="./js/main.js"></script>
+<script src="./js/cuencas.js"></script>
+</html>
