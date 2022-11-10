@@ -11,7 +11,8 @@ console.log("la tabla es: " + table_name);
 
 // Actualizar tablas
 function update_table() {
-    eel.select(table_name)(get_data);
+    //eel.select(table_name)(get_data);
+    eel.read(table_name)(get_data);
 }
 
 // CREATE
@@ -38,15 +39,19 @@ document.querySelector(".crud_create").onclick = function (){
 
 // READ
 window.onload = function () {
-    eel.select(table_name)(get_data);
+    eel.read(table_name)(get_data);
 }
 
 function get_data(output){
+    
+    //alert (output[0])
     json_list = JSON.parse(output);
-    string_table = "<thead><tr><th>Id método</th><th>Nombre del método</th></tr></thead><tbody>";    
-    string_select = "<option disabled selected value style='color:whitesmoke'></option>";
-    json_list.forEach(row => string_table = string_table.concat("<tr><td>", row[0], "</td>", "<td>", row[1] ,"</td></tr>"));
-    json_list.forEach(row => string_select = string_select.concat("<option value='", row[0], "'>", row[0], " - ", row[1], "</option>"));
+    //string_table = "<thead><tr><th>Id método</th><th>Nombre del método</th></tr></thead><tbody>";  
+    string_table = "<thead><tr><th>Método de pesca</th></tr></thead><tbody>";  ;
+    //string_select = "<option disabled selected value style='color:whitesmoke'></option>";
+    string_select = "<option disabled selected value style='color:#whitesmoke'></option>"
+    json_list.forEach(row => string_table = string_table.concat("<tr><td>", row['metodo'], "</td></tr>"));
+    json_list.forEach(row => string_select = string_select.concat("<option value='", row['_id'], "'>", row['metodo'], "</option>"));
     string_table = string_table.concat("</tbody>");
     document.getElementById("data").innerHTML = string_table;
     document.getElementById("update_id").innerHTML = string_select;

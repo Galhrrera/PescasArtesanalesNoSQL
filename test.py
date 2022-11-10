@@ -129,6 +129,7 @@ UpdateCuencaDoc(newCuenca)
 #Imprimir las cuencas
 print("las cuencas son: ")
 cuencas = ReadCollection("cuencas")
+print(type(cuencas))
 
 for c in cuencas:
     print(c)
