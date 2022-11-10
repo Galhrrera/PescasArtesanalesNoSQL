@@ -1,6 +1,7 @@
 from datetime import datetime
 from distutils.log import error
 from msilib.schema import Error
+from bson import ObjectId
 import eel
 import sys
 import  sqlite3 as sql
@@ -146,7 +147,7 @@ def read(collection_name): #Collection is similar to table name on SQL scheme
     return jsonize(listaDocumentos)
     #return listaDocumentos
 
-
+#InsertDocument
 @eel.expose
 def create(data, collection_name):
     try:
@@ -190,7 +191,48 @@ def create(data, collection_name):
             logs.write("[" + str(datetime.now())[0:16] + "]\tCREATE on " + collection_name + ", args:" + str(data) + "<br>\n")
         return jsonize("[MSG]Operación realizada con exito :)")
 
+#DeleteDocument
+@eel.expose
+def delete(_id, collection_name):
+    try:
+        client = MongoClient(os.environ.get("CONNECTION_STRING"))
+        pescasArtesanalesDB = client.PescasArtesanalesNoSQL
+    except Exception as e:
+        return jsonize("[ERR]Conexión con mongo falló:" + str(e))
 
+    try:
+        if collection_name not in collections:
+            return jsonize("[ERROR]Nombre de colección no valido")
+        collection = pescasArtesanalesDB[collection_name]
+        _id = ObjectId(_id)
+        old_doc = collection.find_one({'_id': _id})
+        is_related = True
+
+        if collection_name != "pescas":
+            if collection_name == "cuencas":
+                cuencas_count = pescasArtesanalesDB['pescas'].count_documents({"cuenca": old_doc['cuenca']})
+                if cuencas_count == 0:
+                    is_related = False
+                    delete_from_lista("lista_cuencas", old_doc['cuenca'])
+                    update_schema_validation()
+            if collection_name == "metodos":
+                metodos_count = pescasArtesanalesDB['pescas'].count_documents({'metodo': old_doc['metodo']})
+                if metodos_count == 0:
+                    is_related = False
+                    delete_from_lista("lista_metodos", old_doc['metodo'])
+                    update_schema_validation()
+        else:
+            is_related = False
+        if not is_related:
+            col.find_one_and_delete({"_id": _id})
+        else:
+            return jsonize("[ERR]El doc se encuentra en uso en la colección Pescas")
+    except Exception as e:
+        return jsonize("[ERR:]" + str(e))
+    else:
+        with open("logs.txt", 'a', encoding='utf-8') as logs:
+            logs.write("[" + str(datetime.now())[0:16] + "]\tDELETE on " + collection_name + ", (id: " + str(_id) + ")<br>\n")
+        return jsonize("[MSG]Operación realizada con exito :)")
 
 
 #Start app

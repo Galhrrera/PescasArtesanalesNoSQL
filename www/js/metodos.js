@@ -94,7 +94,7 @@ document.querySelector(".crud_update").onclick = function (){
 //DELETE
 document.querySelector(".crud_delete").onclick = function (){ 
     delete_id = document.getElementById("delete_id");
-
+    alert(delete_id.value)
     if(!delete_id.value){
         modal.style.display = "block"
         modalText.innerHTML = "Debe seleccionar el método que desea eliminar";
