@@ -1,9 +1,11 @@
+from datetime import datetime
 from distutils.log import error
 from msilib.schema import Error
 import eel
 import sys
 import  sqlite3 as sql
 import json
+from numpy import array_equal
 from pymongo import MongoClient
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -21,6 +23,7 @@ except Exception as err:
     print("Error al conectarse a la base de datos de Mongo: ", err)
     
 l_attr_pescas = ["cuenca", "metodo", "fecha", "peso"]
+l_attr_pescas.sort()
 
 initial_db = initial_client.PescasArtesanalesNoSQL
 lista_cuencas = [x['cuenca'] for x in list(initial_db['cuencas'].find({}, {'_id': 0, 'cuenca': 1}))]
@@ -115,7 +118,7 @@ def jsonize(text):
 #Read Collection
 @eel.expose
 def read(collection_name): #Collection is similar to table name on SQL scheme
-    print(collection_name)
+    #print(collection_name)
     try:
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL
@@ -144,6 +147,48 @@ def read(collection_name): #Collection is similar to table name on SQL scheme
     #return listaDocumentos
 
 
+@eel.expose
+def create(data, collection_name):
+    try:
+        client = MongoClient(os.environ.get("CONNECTION_STRING"))
+        pescasArtesanalesDB = client.PescasArtesanalesNoSQL
+    except Exception as e:
+        return jsonize("[ERROR]Conexión con mongo falló:" + str(e))
+
+    try:
+        if collection_name not in collections:
+            return jsonize("[ERROR]Nombre de colección no valido")
+        data_keys = list(data.keys())
+        data_keys.sort()
+        if (collection_name == "pescas" and not array_equal(data_keys, l_attr_pescas)) or (collection_name == "cuencas" and not array_equal(list(data.keys()), 
+            ['cuenca'])) or (collection_name == "metodos" and not array_equal(list(data.keys()), ['metodo'])):
+            return jsonize("[ERROR]Llaves del documento a ingresar no validas")
+
+        if collection_name == "cuencas":
+            append_to_lista("lista_cuencas", data['cuenca'])
+            update_schema_validation()
+        elif collection_name == "metodos":
+            append_to_lista("lista_metodos", data['metodo'])
+            update_schema_validation()
+
+        col = pescasArtesanalesDB[collection_name]
+        if collection_name == "pescas":
+            data['fecha'] = datetime.strptime(data['fecha'], "%Y-%m-%d")
+            data['peso'] = float(data['peso'])
+        col.insert_one(data)
+        
+    except pymongo.errors as e:
+        client.close()
+        err_desc = str(e).split("'description': ",1)[1]
+        return jsonize("[ERROR]" + err_desc.split("'", 2)[1])
+    except Exception as e:
+        client.close()
+        return jsonize("[ERR]" + str(e))
+    finally:
+        client.close()
+        with open("logs.txt", 'a', encoding='utf-8') as logs:
+            logs.write("[" + str(datetime.now())[0:16] + "]\tCREATE on " + collection_name + ", args:" + str(data) + "<br>\n")
+        return jsonize("[MSG]Operación realizada con exito :)")
 
 
 

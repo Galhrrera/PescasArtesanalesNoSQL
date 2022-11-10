@@ -25,7 +25,10 @@ document.querySelector(".crud_create").onclick = function (){
     }
     else {
         try {
-            eel.create(table_name,create_name.value);
+            data = {
+                "metodo": create_name.value
+            }
+            eel.create(data, table_name);
             update_table();
             modal.style.display = "block"
             modalText.innerHTML = "Método creado correctamente";

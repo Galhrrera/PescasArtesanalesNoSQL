@@ -1,0 +1,2 @@
+[2022-11-10 14:57]	CREATE on metodos, args:{'metodo': 'Red de fondo', '_id': ObjectId('636d57af8817a75a0565efba')}<br>
+[2022-11-10 14:58]	CREATE on metodos, args:{'metodo': 'ed', '_id': ObjectId('636d57f98817a75a0565efbe')}<br>
