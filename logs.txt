@@ -9,3 +9,5 @@
 [2022-11-10 18:06]	UPDATE on metodos, id: 636d83d41f6fecba8411ce09, args: {'metodo': 'Red de abajo'}<br>
 [2022-11-10 18:06]	DELETE on metodos, (id: 636d83d41f6fecba8411ce09)<br>
 [2022-11-10 18:06]	DELETE on metodos, (id: 636d83c91f6fecba8411ce05)<br>
+[2022-11-10 18:22]	CREATE on cuencas, args:{'metodo': 'Un Río'}<br>
+[2022-11-10 18:23]	CREATE on cuencas, args:{'metodo': 'Un Río'}<br>

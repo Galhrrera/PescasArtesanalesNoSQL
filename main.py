@@ -36,6 +36,7 @@ print("metodos: ")
 print(lista_metodos)
 print("cuencas: ")
 print(lista_cuencas)
+
 #Configuración del entorno
 sys.path.append("./")
 eel.init("www")
@@ -235,9 +236,6 @@ def delete(_id, collection_name):
 #Update
 @eel.expose
 def update(_id, data, collection_name):
-    print("el di es: ", _id)
-    print("El data es: ", data)
-    print("EL collection_name es: ", collection_name)
     try:
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL

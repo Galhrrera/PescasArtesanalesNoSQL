@@ -11,7 +11,6 @@ console.log("la tabla es: " + table_name);
 
 // Actualizar tablas
 function update_table() {
-    //eel.select(table_name)(get_data);
     eel.read(table_name)(get_data);
 }
 
