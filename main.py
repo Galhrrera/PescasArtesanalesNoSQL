@@ -176,11 +176,11 @@ def create(data, collection_name):
             append_to_lista("lista_metodos", data['metodo'])
             update_schema_validation()
 
-        col = pescasArtesanalesDB[collection_name]
+        collection = pescasArtesanalesDB[collection_name]
         if collection_name == "pescas":
             data['fecha'] = datetime.strptime(data['fecha'], "%Y-%m-%d")
             data['peso'] = float(data['peso'])
-        col.insert_one(data)
+        collection.insert_one(data)
         
     except pymongo.errors as e:
         client.close()
@@ -188,12 +188,12 @@ def create(data, collection_name):
         return jsonize("[ERROR]" + err_desc.split("'", 2)[1])
     except Exception as e:
         client.close()
-        return jsonize("[ERR]" + str(e))
+        return jsonize("[ERROR]" + str(e))
     finally:
         client.close()
         with open("logs.txt", 'a', encoding='utf-8') as logs:
             logs.write("[" + str(datetime.now())[0:16] + "]\tCREATE on " + collection_name + ", args:" + str(data) + "<br>\n")
-        return jsonize("[MSG]Operación realizada con exito :)")
+        return jsonize("[MSG] Operación realizada con exito :)")
 
 #DeleteDocument
 @eel.expose
@@ -233,10 +233,61 @@ def delete(_id, collection_name):
         else:
             return jsonize("[ERROR] El doc se encuentra en uso en la colección Pescas")
     except Exception as e:
-        return jsonize("[ERROR] :" + str(e))
+        return jsonize("[ERROR] Error al eliminar el documento:", e)
     else:
         with open("logs.txt", 'a', encoding='utf-8') as logs:
             logs.write("[" + str(datetime.now())[0:16] + "]\tDELETE on " + collection_name + ", (id: " + str(_id) + ")<br>\n")
+        return jsonize("[MSG] Operación realizada con exito :)")
+    
+#Update
+@eel.expose
+def update(_id, data, collection_name):
+    print("el di es: ", _id)
+    print("El data es: ", data)
+    print("EL collection_name es: ", collection_name)
+    try:
+        client = MongoClient(os.environ.get("CONNECTION_STRING"))
+        pescasArtesanalesDB = client.PescasArtesanalesNoSQL
+    except Exception as e:
+        return jsonize("[ERROR] Conexión con mongo falló:", e)
+
+    try:
+        if collection_name not in collections:
+            return jsonize("[ERROR] Nombre de colección no valido")
+        dict_keys = list(data.keys())
+        dict_keys.sort()
+        if (collection_name == "pescas" and not array_equal(dict_keys, l_attr_pescas)) or (collection_name == "cuencas" and not array_equal(list(data.keys()), 
+                    ['cuenca'])) or (collection_name == "metodos" and not array_equal(list(data.keys()), ['metodo'])):
+            return jsonize("[ERROR] datos no válidos")
+
+        _id = ObjectId(_id)
+
+        collection = pescasArtesanalesDB[collection_name]
+        old_doc = collection.find_one({'_id': _id})
+        if old_doc:
+            if collection_name == "pescas":
+                data['fecha'] = datetime.strptime(data['fecha'], "%Y-%m-%d")
+                data['peso'] = float(data['peso'])
+
+            update_json = {
+                "$set": data
+            }
+            collection.find_one_and_update({'_id': _id}, update_json)
+
+            if collection_name != "pescas":
+                if collection_name == "cuencas":
+                    update_lista("lista_cuencas", old_doc['cuenca'], data['cuenca'])
+                    update_schema_validation()
+                    pescasArtesanalesDB['pescas'].update_many({'cuenca': old_doc['cuenca']},{ "$set": { 'cuenca': data['cuenca']}})
+                elif collection_name == "metodos":
+                    update_lista("lista_metodos", old_doc['metodo'], data['metodo'])
+                    update_schema_validation()
+                    pescasArtesanalesDB['pescas'].update_many({'metodo': old_doc['metodo']},{ "$set": { 'metodo': data['metodo']}})        
+    except Exception as e:
+        return jsonize("[ERROR] Error al actualizar el documento: ", e)
+    else:
+        with open("logs.txt", 'a', encoding='utf-8') as logs:
+            logs.write("[" + str(datetime.now())[0:16] + "]\tUPDATE on " + collection_name + ", id: " + str(_id) + ", args: " + str(data) + "<br>\n")
         return jsonize("[MSG]Operación realizada con exito :)")
 
 

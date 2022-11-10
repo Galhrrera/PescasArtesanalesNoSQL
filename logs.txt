@@ -1,3 +1,11 @@
 [2022-11-10 14:57]	CREATE on metodos, args:{'metodo': 'Red de fondo', '_id': ObjectId('636d57af8817a75a0565efba')}<br>
 [2022-11-10 14:58]	CREATE on metodos, args:{'metodo': 'ed', '_id': ObjectId('636d57f98817a75a0565efbe')}<br>
 [2022-11-10 17:01]	DELETE on metodos, (id: 636d57af8817a75a0565efba)<br>
+[2022-11-10 17:36]	CREATE on metodos, args:{'metodo': 'Red de fonda', '_id': ObjectId('636d7d0b9e0952b0d46d6183')}<br>
+[2022-11-10 18:04]	UPDATE on metodos, id: 636d7d0b9e0952b0d46d6183, args: {'metodo': 'Red de fondo'}<br>
+[2022-11-10 18:04]	DELETE on metodos, (id: 636d7d0b9e0952b0d46d6183)<br>
+[2022-11-10 18:05]	CREATE on metodos, args:{'metodo': 'Red de fondo', '_id': ObjectId('636d83c91f6fecba8411ce05')}<br>
+[2022-11-10 18:05]	CREATE on metodos, args:{'metodo': 'Red de arriba', '_id': ObjectId('636d83d41f6fecba8411ce09')}<br>
+[2022-11-10 18:06]	UPDATE on metodos, id: 636d83d41f6fecba8411ce09, args: {'metodo': 'Red de abajo'}<br>
+[2022-11-10 18:06]	DELETE on metodos, (id: 636d83d41f6fecba8411ce09)<br>
+[2022-11-10 18:06]	DELETE on metodos, (id: 636d83c91f6fecba8411ce05)<br>

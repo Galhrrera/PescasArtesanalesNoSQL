@@ -47,7 +47,6 @@ window.onload = function () {
 
 function get_data(output){
     
-    //alert (output[0])
     json_list = JSON.parse(output);
     //string_table = "<thead><tr><th>Id método</th><th>Nombre del método</th></tr></thead><tbody>";  
     string_table = "<thead><tr><th>Método de pesca</th></tr></thead><tbody>";  ;
@@ -63,8 +62,8 @@ function get_data(output){
 
 //UPDATE
 document.querySelector(".crud_update").onclick = function (){ 
-    update_id = document.getElementById("update_id");
-    update_new_name = document.getElementById("update_name");
+    update_id = document.getElementById("update_id"); //El ID del método actual
+    update_new_name = document.getElementById("update_name"); //El nuevo nombre
     update_args = [update_id.value, update_new_name.value];
     if(!update_args[0] || !update_args[1]) {
         if(!update_args[0]){
@@ -80,7 +79,10 @@ document.querySelector(".crud_update").onclick = function (){
     }
     else {
         try {
-            eel.update(table_name, update_args);
+            args_json = {
+                "metodo": update_new_name.value
+            }
+            eel.update(update_id.value, args_json, table_name);
             update_table();
             modal.style.display = "block"
             modalText.innerHTML = "Método: "+update_args[0]+ " actualizado correctamente";
@@ -94,7 +96,6 @@ document.querySelector(".crud_update").onclick = function (){
 //DELETE
 document.querySelector(".crud_delete").onclick = function (){ 
     delete_id = document.getElementById("delete_id");
-    alert(delete_id.value)
     if(!delete_id.value){
         modal.style.display = "block"
         modalText.innerHTML = "Debe seleccionar el método que desea eliminar";
