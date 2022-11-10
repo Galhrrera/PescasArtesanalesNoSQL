@@ -32,6 +32,10 @@ lista_metodos = [x['metodo'] for x in list(initial_db['metodos'].find({}, {'_id'
 collections = initial_db.list_collection_names()
 initial_client.close()
 
+print("metodos: ")
+print(lista_metodos)
+print("cuencas: ")
+print(lista_cuencas)
 #Configuración del entorno
 sys.path.append("./")
 eel.init("www")
@@ -198,14 +202,15 @@ def delete(_id, collection_name):
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL
     except Exception as e:
-        return jsonize("[ERR]Conexión con mongo falló:" + str(e))
+        return jsonize("[ERROR] Conexión con mongo falló:" + str(e))
 
     try:
         if collection_name not in collections:
-            return jsonize("[ERROR]Nombre de colección no valido")
+            return jsonize("[ERROR] Nombre de colección no valido")
         collection = pescasArtesanalesDB[collection_name]
         _id = ObjectId(_id)
         old_doc = collection.find_one({'_id': _id})
+        print("anterior: ", old_doc)
         is_related = True
 
         if collection_name != "pescas":
@@ -224,11 +229,11 @@ def delete(_id, collection_name):
         else:
             is_related = False
         if not is_related:
-            col.find_one_and_delete({"_id": _id})
+            collection.find_one_and_delete({"_id": _id})
         else:
-            return jsonize("[ERR]El doc se encuentra en uso en la colección Pescas")
+            return jsonize("[ERROR] El doc se encuentra en uso en la colección Pescas")
     except Exception as e:
-        return jsonize("[ERR:]" + str(e))
+        return jsonize("[ERROR] :" + str(e))
     else:
         with open("logs.txt", 'a', encoding='utf-8') as logs:
             logs.write("[" + str(datetime.now())[0:16] + "]\tDELETE on " + collection_name + ", (id: " + str(_id) + ")<br>\n")

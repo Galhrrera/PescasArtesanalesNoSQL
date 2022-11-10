@@ -101,7 +101,7 @@ document.querySelector(".crud_delete").onclick = function (){
         clean_inputs();
     }
     else {
-        eel.delete(table_name, delete_id.value)(deleteRegistro);
+        eel.delete(delete_id.value, table_name)(deleteRegistro);
     }
 }
 
