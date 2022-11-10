@@ -182,17 +182,11 @@ def create(data, collection_name):
             data['peso'] = float(data['peso'])
         collection.insert_one(data)
         
-    except pymongo.errors as e:
-        client.close()
-        err_desc = str(e).split("'description': ",1)[1]
-        return jsonize("[ERROR]" + err_desc.split("'", 2)[1])
     except Exception as e:
         client.close()
         return jsonize("[ERROR]" + str(e))
     finally:
         client.close()
-        with open("logs.txt", 'a', encoding='utf-8') as logs:
-            logs.write("[" + str(datetime.now())[0:16] + "]\tCREATE on " + collection_name + ", args:" + str(data) + "<br>\n")
         return jsonize("[MSG] Operación realizada con exito :)")
 
 #DeleteDocument
@@ -234,9 +228,8 @@ def delete(_id, collection_name):
             return jsonize("[ERROR] El doc se encuentra en uso en la colección Pescas")
     except Exception as e:
         return jsonize("[ERROR] Error al eliminar el documento:", e)
-    else:
-        with open("logs.txt", 'a', encoding='utf-8') as logs:
-            logs.write("[" + str(datetime.now())[0:16] + "]\tDELETE on " + collection_name + ", (id: " + str(_id) + ")<br>\n")
+    finally:
+        client.close()
         return jsonize("[MSG] Operación realizada con exito :)")
     
 #Update
@@ -285,9 +278,8 @@ def update(_id, data, collection_name):
                     pescasArtesanalesDB['pescas'].update_many({'metodo': old_doc['metodo']},{ "$set": { 'metodo': data['metodo']}})        
     except Exception as e:
         return jsonize("[ERROR] Error al actualizar el documento: ", e)
-    else:
-        with open("logs.txt", 'a', encoding='utf-8') as logs:
-            logs.write("[" + str(datetime.now())[0:16] + "]\tUPDATE on " + collection_name + ", id: " + str(_id) + ", args: " + str(data) + "<br>\n")
+    finally:
+        client.close()
         return jsonize("[MSG]Operación realizada con exito :)")
 
 
