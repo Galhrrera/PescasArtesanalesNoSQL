@@ -14,6 +14,7 @@ import pprint
 import pymongo
 from pyparsing import col
 from sympy import arg
+from pymongo.errors import WriteError
 
 
 
@@ -114,8 +115,6 @@ def update_schema_validation():
 
 def jsonize(text):
     jsonized_text = json.dumps(text, ensure_ascii=False, default=str).encode('utf-8').decode('utf-8')
-    #print(type(text))
-    #print(jsonized_text)
     return jsonized_text
 
 
@@ -124,7 +123,6 @@ def jsonize(text):
 #Read Collection
 @eel.expose
 def read(collection_name): #Collection is similar to table name on SQL scheme
-    #print(collection_name)
     try:
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL
@@ -159,16 +157,16 @@ def create(data, collection_name):
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL
     except Exception as e:
-        return jsonize("[ERROR]Conexión con mongo falló:" + str(e))
+        return jsonize("[ERROR] Conexión con mongo falló:" + str(e))
 
     try:
         if collection_name not in collections:
-            return jsonize("[ERROR]Nombre de colección no valido")
+            return jsonize("[ERROR] Nombre de colección no valido")
         data_keys = list(data.keys())
         data_keys.sort()
         if (collection_name == "pescas" and not array_equal(data_keys, l_attr_pescas)) or (collection_name == "cuencas" and not array_equal(list(data.keys()), 
             ['cuenca'])) or (collection_name == "metodos" and not array_equal(list(data.keys()), ['metodo'])):
-            return jsonize("[ERROR]Llaves del documento a ingresar no validas")
+            return jsonize("[ERROR] Llaves del documento a ingresar no validas")
 
         if collection_name == "cuencas":
             append_to_lista("lista_cuencas", data['cuenca'])
@@ -182,19 +180,16 @@ def create(data, collection_name):
             data['fecha'] = datetime.strptime(data['fecha'], "%Y-%m-%d")
             data['peso'] = float(data['peso'])
         collection.insert_one(data)
-        
     except Exception as e:
         client.close()
-        return jsonize("[ERROR]" + str(e))
+        return jsonize("[ERROR] " + str(e))
     finally:
         client.close()
-        return jsonize("[MSG] Operación realizada con exito :)")
+        return jsonize("[MSG] Documento creado con éxito")
 
 #DeleteDocument
 @eel.expose
 def delete(_id, collection_name):
-    print(_id)
-    print(collection_name)
     try:
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL
@@ -207,7 +202,6 @@ def delete(_id, collection_name):
         collection = pescasArtesanalesDB[collection_name]
         _id = ObjectId(_id)
         old_doc = collection.find_one({'_id': _id})
-        print("anterior: ", old_doc)
         is_related = True
 
         if collection_name != "pescas":
@@ -260,6 +254,7 @@ def update(_id, data, collection_name):
 
         collection = pescasArtesanalesDB[collection_name]
         old_doc = collection.find_one({'_id': _id})
+        
         if old_doc:
             if collection_name == "pescas":
                 data['fecha'] = datetime.strptime(data['fecha'], "%Y-%m-%d")

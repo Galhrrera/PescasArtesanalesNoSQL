@@ -27,17 +27,35 @@ document.querySelector(".crud_create").onclick = function (){
             data = {
                 "cuenca": create_name.value
             }
-            eel.create(data, table_name);
-            update_table();
+            eel.create(data, table_name)(createRegistro);
+            //update_table();
+            /*
             modal.style.display = "block"
             modalText.innerHTML = "Método creado correctamente";
             clean_inputs();
+            */
         } catch (error) {
             console.log(error)
         }
     }
     clean_inputs();
 }  
+
+function createRegistro(output){
+    //outputtmp = output.split(" ")
+    if (output[2]=="M" && output[3] == "S" && output[4] == "G"){
+        modal.style.display = "block"
+        //modalText.innerHTML = "Cuenca creada correctamente";
+        modalText.innerHTML = output.replace("MSG", "");
+        clean_inputs();
+    }
+    else if(outputtmp[0] == "[ERROR]"){
+        modal.style.display = "block"
+        modalText.innerHTML = "Error al crear el método: "+ output;
+        clean_inputs();
+    }
+    update_table()
+}
 
 
 // READ
