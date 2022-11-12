@@ -19,6 +19,7 @@ Se debe desarrollar una aplicación que permita hacer uso de las operaciones CRU
 - python 3 (El desarrollo se realizó en la versión 3.9.7)
 - eel
 - Google chrome
+- Servidor de base de datos MongoDB
 
 ## Preparación
 Antes de ejecutar la aplicación, es necesario verificar que cumple con os requisitos mencionados.
