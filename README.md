@@ -1,4 +1,4 @@
-# Parcial N° 4 para Tópicos avanzados en bases de datos 2022-2
+# Parcial N° 4 para Tópicos avanzados en bases de datos 2022-2 / Final
 ### Bases de datos embebidas - NO SQL
 Se debe desarrollar una aplicación que permita hacer uso de las operaciones CRUD a una base de datos SQLite a través de una interfaz de usuario.
 
