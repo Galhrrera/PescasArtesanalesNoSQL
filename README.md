@@ -8,7 +8,7 @@ Se debe desarrollar una aplicación que permita hacer uso de las operaciones CRU
 
 [Ejecución de la aplicación](https://github.com/Galhrrera/PescasArtesanalesNoSQL/blob/main/README.md#ejecuci%C3%B3n-de-la-aplicaci%C3%B3n)
 
-[Dominio del problema](https://github.com/Galhrrera/PescasArtesanales/blob/main/README.md#dominio-del-problema-pescas-artesanales)
+[Dominio del problema](https://github.com/Galhrrera/PescasArtesanalesNoSQL/blob/main/README.md#dominio-del-problema-pescas-artesanales)
 
 [Explicación de la implementación](https://github.com/Galhrrera/PescasArtesanales/blob/main/README.md#explicaci%C3%B3n-de-la-implementaci%C3%B3n)
 
@@ -61,9 +61,17 @@ Las actividades de pesca tendrán los siguientes atributos:
 - Fecha de la actividad
 - Peso del pescado obtenido en la actividad
 
+### NOtA:
+Para este dominio del problema se está utilizando un motor de base de datos no relacional, por lo cual es importante mencionar que el diagrama de entidad relación es de caracter puramente informativo al usuario, para dar a entender como se relacionarían las tablas, o documentos, entre si.
+
 ### Diagrama entidad relación de la solución: 
 
 ![Diagrama entidad relación](https://github.com/Galhrrera/PescasArtesanales/blob/main/imgs/diagrama%20entidad%20relaci%C3%B3n.jpg)
+
+### Scheme validation:
+
+La solución hace uso de scheme validations que deben ser configurados en el motor de base de datos MonngoDB:
+
 
 ## Explicación de la implementación
 
