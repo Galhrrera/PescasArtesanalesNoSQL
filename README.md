@@ -2,7 +2,7 @@
 ### Bases de datos embebidas - NO SQL
 Se debe desarrollar una aplicación que permita hacer uso de las operaciones CRUD a una base de datos SQLite a través de una interfaz de usuario.
 
-[Requisitos para ejecutar la aplicación](https://github.com/Galhrrera/PescasArtesanales/blob/main/README.md#requisitos-para-ejecutar-la-aplicaci%C3%B3n)
+[Requisitos para ejecutar la aplicación](https://github.com/Galhrrera/PescasArtesanalesNoSQL/blob/main/README.md#requisitos-para-ejecutar-la-aplicaci%C3%B3n)
 
 [Preparación](https://github.com/Galhrrera/PescasArtesanales/blob/main/README.md#preparaci%C3%B3n)
 
