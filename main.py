@@ -193,6 +193,8 @@ def create(data, collection_name):
 #DeleteDocument
 @eel.expose
 def delete(_id, collection_name):
+    print(_id)
+    print(collection_name)
     try:
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL
@@ -236,6 +238,9 @@ def delete(_id, collection_name):
 #Update
 @eel.expose
 def update(_id, data, collection_name):
+    print("El id es: ", _id)
+    print("la data es: ", data)
+    print("El collection name es: ", collection_name)
     try:
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL

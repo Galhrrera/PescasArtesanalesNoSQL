@@ -60,7 +60,7 @@ function get_data(output){
 
 //UPDATE
 document.querySelector(".crud_update").onclick = function (){ 
-    update_id = document.getElementById("update_id"); //El ID del método actual
+    update_id = document.getElementById("update_id"); //El ID de la cuenca actual
     update_new_name = document.getElementById("update_name"); //El nuevo nombre
     update_args = [update_id.value, update_new_name.value];
     if(!update_args[0] || !update_args[1]) {
@@ -78,7 +78,7 @@ document.querySelector(".crud_update").onclick = function (){
     else {
         try {
             args_json = {
-                "metodo": update_new_name.value
+                "cuenca": update_new_name.value
             }
             eel.update(update_id.value, args_json, table_name);
             update_table();
@@ -94,14 +94,13 @@ document.querySelector(".crud_update").onclick = function (){
 //DELETE
 document.querySelector(".crud_delete").onclick = function () {
     delete_id = document.getElementById("delete_id");
-
     if (!delete_id.value) {
         modal.style.display = "block"
         modalText.innerHTML = "Debe seleccionar la cuenca que desea eliminar";
         clean_inputs();
     }
     else {
-        eel.delete(table_name, delete_id.value)(deleteRegistro);
+        eel.delete(delete_id.value, table_name)(deleteRegistro);
     }
 }
 
