@@ -1,19 +1,12 @@
 from datetime import datetime
-from distutils.log import error
-from msilib.schema import Error
 from bson import ObjectId
 import eel
 import sys
-import  sqlite3 as sql
 import json
 from numpy import array_equal
 from pymongo import MongoClient
 from dotenv import load_dotenv, find_dotenv
 import os
-import pprint
-import pymongo
-from pyparsing import col
-from sympy import arg
 from pymongo.errors import WriteError
 
 
@@ -22,7 +15,7 @@ from pymongo.errors import WriteError
 try:
     initial_client = MongoClient(os.environ.get("CONNECTION_STRING"))
 except Exception as err:
-    print("Error al conectarse a la base de datos de Mongo: ", err)
+    print("[ERROR] al conectarse a la base de datos de Mongo: ", err)
     
 l_attr_pescas = ["cuenca", "metodo", "fecha", "peso"]
 l_attr_pescas.sort()
@@ -32,11 +25,6 @@ lista_cuencas = [x['cuenca'] for x in list(initial_db['cuencas'].find({}, {'_id'
 lista_metodos = [x['metodo'] for x in list(initial_db['metodos'].find({}, {'_id': 0, 'metodo': 1}))]
 collections = initial_db.list_collection_names()
 initial_client.close()
-
-print("metodos: ")
-print(lista_metodos)
-print("cuencas: ")
-print(lista_cuencas)
 
 #Configuración del entorno
 sys.path.append("./")
@@ -148,7 +136,6 @@ def read(collection_name): #Collection is similar to table name on SQL scheme
         client.close()
         
     return jsonize(listaDocumentos)
-    #return listaDocumentos
 
 #InsertDocument
 @eel.expose

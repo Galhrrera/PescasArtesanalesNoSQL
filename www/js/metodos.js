@@ -43,9 +43,7 @@ window.onload = function () {
 function get_data(output){
     
     json_list = JSON.parse(output);
-    //string_table = "<thead><tr><th>Id método</th><th>Nombre del método</th></tr></thead><tbody>";  
     string_table = "<thead><tr><th>Método de pesca</th></tr></thead><tbody>";  ;
-    //string_select = "<option disabled selected value style='color:whitesmoke'></option>";
     string_select = "<option disabled selected value style='color:#whitesmoke'></option>"
     json_list.forEach(row => string_table = string_table.concat("<tr><td>", row['metodo'], "</td></tr>"));
     json_list.forEach(row => string_select = string_select.concat("<option value='", row['_id'], "'>", row['metodo'], "</option>"));
