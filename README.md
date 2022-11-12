@@ -33,7 +33,7 @@ Antes de ejecutar la aplicación, es necesario verificar que cumple con os requi
 - Cree las colecciones en Mongo DB
   - **pescas**
   - **metodos**
-  - **cuencas
+  - **cuencas**
 - Configure el **scheme_validation** en cada uno de los documentos
 
 ### Nota
