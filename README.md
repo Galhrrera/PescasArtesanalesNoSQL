@@ -72,6 +72,103 @@ Para este dominio del problema se está utilizando un motor de base de datos no 
 
 La solución hace uso de scheme validations que deben ser configurados en el motor de base de datos MonngoDB:
 
+#### Colección pescas:
+
+```
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'cuenca',
+      'metodo',
+      'fecha',
+      'peso'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId'
+      },
+      cuenca: {
+        'enum': [
+          'Río Magdalena',
+          'Río Orinoco',
+          'Río Amazonas',
+          'Río Atrato'
+        ],
+        description: 'El nombre de la cuenca ingresado no es válido'
+      },
+      metodo: {
+        'enum': [
+          'Arpón',
+          'Flecha de mano',
+          'Atarraya',
+          'Chinchorro'
+        ],
+        description: 'El nombre del método de pesca ingresado no es válido'
+      },
+      fecha: {
+        bsonType: 'date',
+        description: 'La fecha debe estar en formato YYYY/MM/DD'
+      },
+      peso: {
+        bsonType: 'double',
+        minimum: 1,
+        description: 'El peso de la pesca debe ser un número y mayor a 1'
+      }
+    },
+    additionalProperties: false
+  }
+}
+```
+
+#### Colección metodos:
+
+```
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'metodo'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId'
+      },
+      metodo: {
+        bsonType: 'string',
+        minLength: 3,
+        description: 'El nombre del método debe ser una cadena de caracteres no vacía y con 3 o más caracteres'
+      }
+    },
+    additionalProperties: false
+  }
+}
+```
+
+#### Colección cuencas:
+
+```
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'cuenca'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId'
+      },
+      cuenca: {
+        bsonType: 'string',
+        minLength: 3,
+        description: 'El nombre del método debe ser una cadena de caracteres no vacía y con 3 o más caracteres'
+      }
+    },
+    additionalProperties: false
+  }
+}
+```
 
 ## Explicación de la implementación
 
