@@ -231,7 +231,7 @@ def delete(_id, collection_name):
         return jsonize("[ERROR] Error al eliminar el documento:", e)
     finally:
         client.close()
-        #return jsonize("[MSG] Documento eliminado con éxito")
+
     
 #Update
 @eel.expose
