@@ -6,7 +6,7 @@ Se debe desarrollar una aplicación que permita hacer uso de las operaciones CRU
 
 [Preparación](https://github.com/Galhrrera/PescasArtesanalesNoSQL/blob/main/README.md#preparaci%C3%B3n)
 
-[Ejecución de la aplicación](https://github.com/Galhrrera/PescasArtesanales/blob/main/README.md#ejecuci%C3%B3n-de-la-aplicaci%C3%B3n)
+[Ejecución de la aplicación](https://github.com/Galhrrera/PescasArtesanalesNoSQL/blob/main/README.md#ejecuci%C3%B3n-de-la-aplicaci%C3%B3n)
 
 [Dominio del problema](https://github.com/Galhrrera/PescasArtesanales/blob/main/README.md#dominio-del-problema-pescas-artesanales)
 
