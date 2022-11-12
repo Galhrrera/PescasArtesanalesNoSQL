@@ -224,20 +224,18 @@ def delete(_id, collection_name):
             is_related = False
         if not is_related:
             collection.find_one_and_delete({"_id": _id})
+            return jsonize("[MSG] Documento eliminado con éxito")
         else:
             return jsonize("[ERROR] El doc se encuentra en uso en la colección Pescas")
     except Exception as e:
         return jsonize("[ERROR] Error al eliminar el documento:", e)
     finally:
         client.close()
-        return jsonize("[MSG] Documento eliminado con éxito")
+        #return jsonize("[MSG] Documento eliminado con éxito")
     
 #Update
 @eel.expose
 def update(_id, data, collection_name):
-    print("El id es: ", _id)
-    print("la data es: ", data)
-    print("El collection name es: ", collection_name)
     try:
         client = MongoClient(os.environ.get("CONNECTION_STRING"))
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL
