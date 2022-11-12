@@ -29,6 +29,12 @@ Antes de ejecutar la aplicación, es necesario verificar que cumple con os requi
 - Asegúrese de tener pip instalado. pip será la herramienta con la cual se descargará e instalará el paquete **eel** de python, gracias al cual se logra realizar una conexión entre en back-end desarrollado en python y el front-end realizado con html, css y js.
 - Asegúrese de tener instalado **eel**. eel es el paquete que permite la conexión entre el back-end desarrollado con python y el front-end desarrollado con html, css y js. Básicamente, se encarga de traducir los métodos o funciones de python a js.
 - Inicie su servidor de base de datos **MongoDB**, preferiblemente de manera **Local**. Esto se debe a que la acplicación se conecta a `localhost:27017`
+- Cree la base de datos con el nombre de **PescasArtesanalesNoSQL**
+- Cree las colecciones en Mongo DB
+  - **pescas**
+  - **metodos**
+  - **cuencas
+- Configure el **scheme_validation** en cada uno de los documentos
 
 ### Nota
 Una vez se asegure de tener instalado python, google chrome y pip, basta con ejecutar el siguiente comando para descargar e instalar pip:
