@@ -44,7 +44,7 @@ Una vez se asegure de tener instalado python, google chrome y pip, basta con eje
 ## Ejecución de la aplicación
 La aplicación se puede ejecutar directamente con python tras clonar este repositorio. Siga los siguientes pasos:
 
-1. Clone este repositorio en su ordenador ingresando en la terminal el comando: `https://github.com/Galhrrera/PescasArtesanalesNoSQL.git`
+1. Clone este repositorio en su ordenador ingresando en la terminal el comando: `git clone https://github.com/Galhrrera/PescasArtesanalesNoSQL.git`
 2. Ingrese a la carpeta del proyecto **PescasArtesanales**
 3. En la terminal ejecute el archivo **main.py** utilizando python: `python.exe main.py`
 
