@@ -107,14 +107,14 @@ def update_schema_validation():
             db.command("collMod", "pescas", validator=schema_validation)
         except Exception as e:
             client.close()
-            return jsonize("[ERROR]Schema validation failed:" + str(e))    
+            return jsonize("[ERROR] Schema validation failed:" + str(e))    
         finally:
             client.close()
 
 
 
 def jsonize(text):
-    jsonized_text = json.dumps(text, ensure_ascii=False, default=str).encode('utf-8').decode('utf-8')
+    jsonized_text = json.dumps(text, ensure_ascii=False, default=str).encode('utf-8').decode()
     return jsonized_text
 
 
@@ -128,11 +128,11 @@ def read(collection_name): #Collection is similar to table name on SQL scheme
         pescasArtesanalesDB = client.PescasArtesanalesNoSQL
     except Exception as e:
         client.close()
-        return jsonize("[ERROR]Conexión con mongo falló:" + str(e))
+        return jsonize("[ERROR] Conexión con mongo falló:" + str(e))
 
     try:
         if collection_name not in collections:
-            return jsonize("[ERROR]El nombre de la colección no existe")
+            return jsonize("[ERROR] El nombre de la colección no existe")
 
         collection = pescasArtesanalesDB[collection_name]
         values = collection.find()
@@ -143,7 +143,7 @@ def read(collection_name): #Collection is similar to table name on SQL scheme
 
     except Exception as e:
         client.close()
-        return jsonize("[ERROR]" + str(e))
+        return jsonize("[ERROR] " + str(e))
     finally:
         client.close()
         
@@ -168,18 +168,21 @@ def create(data, collection_name):
             ['cuenca'])) or (collection_name == "metodos" and not array_equal(list(data.keys()), ['metodo'])):
             return jsonize("[ERROR] Llaves del documento a ingresar no validas")
 
+        collection = pescasArtesanalesDB[collection_name]
+
         if collection_name == "cuencas":
             append_to_lista("lista_cuencas", data['cuenca'])
             update_schema_validation()
         elif collection_name == "metodos":
             append_to_lista("lista_metodos", data['metodo'])
             update_schema_validation()
-
-        collection = pescasArtesanalesDB[collection_name]
-        if collection_name == "pescas":
+        elif collection_name == "pescas":
             data['fecha'] = datetime.strptime(data['fecha'], "%Y-%m-%d")
             data['peso'] = float(data['peso'])
+            
+
         collection.insert_one(data)
+        
     except Exception as e:
         client.close()
         return jsonize("[ERROR] " + str(e))
@@ -227,7 +230,7 @@ def delete(_id, collection_name):
         return jsonize("[ERROR] Error al eliminar el documento:", e)
     finally:
         client.close()
-        return jsonize("[MSG] Operación realizada con exito :)")
+        return jsonize("[MSG] Documento eliminado con éxito")
     
 #Update
 @eel.expose
@@ -278,7 +281,7 @@ def update(_id, data, collection_name):
         return jsonize("[ERROR] Error al actualizar el documento: ", e)
     finally:
         client.close()
-        return jsonize("[MSG]Operación realizada con exito :)")
+        return jsonize("[MSG] Documento actualizado con éxito")
 
 
 #Start app

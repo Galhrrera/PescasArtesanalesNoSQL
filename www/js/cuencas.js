@@ -15,9 +15,9 @@ function update_table() {
 }
 
 // CREATE
-document.querySelector(".crud_create").onclick = function (){ 
+document.querySelector(".crud_create").onclick = function () {
     create_name = document.getElementById("create_name");
-    if(!create_name.value) {       
+    if (!create_name.value) {
         modal.style.display = "block"
         modalText.innerHTML = "La entrada no puede estar vacía";
         clean_inputs();
@@ -27,46 +27,23 @@ document.querySelector(".crud_create").onclick = function (){
             data = {
                 "cuenca": create_name.value
             }
-            eel.create(data, table_name)(createRegistro);
-            //update_table();
-            /*
-            modal.style.display = "block"
-            modalText.innerHTML = "Método creado correctamente";
-            clean_inputs();
-            */
+            eel.create(data, table_name)(showModals);
         } catch (error) {
             console.log(error)
         }
     }
     clean_inputs();
-}  
-
-function createRegistro(output){
-    //outputtmp = output.split(" ")
-    if (output[2]=="M" && output[3] == "S" && output[4] == "G"){
-        modal.style.display = "block"
-        //modalText.innerHTML = "Cuenca creada correctamente";
-        modalText.innerHTML = output.replace("MSG", "");
-        clean_inputs();
-    }
-    else if(outputtmp[0] == "[ERROR]"){
-        modal.style.display = "block"
-        modalText.innerHTML = "Error al crear el método: "+ output;
-        clean_inputs();
-    }
-    update_table()
 }
-
 
 // READ
 window.onload = function () {
     eel.read(table_name)(get_data);
 }
 
-function get_data(output){
-    
+function get_data(output) {
+
     json_list = JSON.parse(output);
-    string_table = "<thead><tr><th>Cuenca hidrográfica</th></tr></thead><tbody>";  ;
+    string_table = "<thead><tr><th>Cuenca hidrográfica</th></tr></thead><tbody>";;
     string_select = "<option disabled selected value style='color:#whitesmoke'></option>"
     json_list.forEach(row => string_table = string_table.concat("<tr><td>", row['cuenca'], "</td></tr>"));
     json_list.forEach(row => string_select = string_select.concat("<option value='", row['_id'], "'>", row['cuenca'], "</option>"));
@@ -77,17 +54,17 @@ function get_data(output){
 }
 
 //UPDATE
-document.querySelector(".crud_update").onclick = function (){ 
+document.querySelector(".crud_update").onclick = function () {
     update_id = document.getElementById("update_id"); //El ID de la cuenca actual
     update_new_name = document.getElementById("update_name"); //El nuevo nombre
     update_args = [update_id.value, update_new_name.value];
-    if(!update_args[0] || !update_args[1]) {
-        if(!update_args[0]){
+    if (!update_args[0] || !update_args[1]) {
+        if (!update_args[0]) {
             modal.style.display = "block"
             modalText.innerHTML = "La entrada no puede estar vacía - Falta el método que desea modificar";
             clean_inputs();
         }
-        else if(!update_args[1]){
+        else if (!update_args[1]) {
             modal.style.display = "block"
             modalText.innerHTML = "La entrada no puede estar vacía - Falta el nuevo nombre";
             clean_inputs();
@@ -98,16 +75,13 @@ document.querySelector(".crud_update").onclick = function (){
             args_json = {
                 "cuenca": update_new_name.value
             }
-            eel.update(update_id.value, args_json, table_name);
-            update_table();
-            modal.style.display = "block"
-            modalText.innerHTML = "Método: "+update_args[0]+ " actualizado correctamente";
-            clean_inputs();
+            eel.update(update_id.value, args_json, table_name)(showModals);
         } catch (error) {
             console.log(error);
         }
     }
-} 
+}
+
 
 //DELETE
 document.querySelector(".crud_delete").onclick = function () {
@@ -118,35 +92,26 @@ document.querySelector(".crud_delete").onclick = function () {
         clean_inputs();
     }
     else {
-        eel.delete(delete_id.value, table_name)(deleteRegistro);
+        eel.delete(delete_id.value, table_name)(showModals);
     }
 }
 
-function deleteRegistro(output) {
-    if (output != null) {
-        clean_inputs();
-        let array = output.split(" ");
-        array[0] = array[0].replace('"', '');
-        if (array[0] == "[ERROR]") {
-            modal.style.display = "block"
-            modalText.innerHTML = output;
-            clean_inputs();
-            return
-        }
-        else {
-            update_table();
-            modal.style.display = "block"
-            modalText.innerHTML = "Cuenca " + delete_id.value + " eliminada correctamente";
-            clean_inputs();
-        }
-    }
-    else {
-        update_table();
+
+//ShowModals
+function showModals(output){
+    if (output[2] == "M" && output[3] == "S" && output[4] == "G") {
         modal.style.display = "block"
-        modalText.innerHTML = "Cuenca " + delete_id.value + " eliminada correctamente";
+        modalText.innerHTML = output.replace("[MSG] ", "");
         clean_inputs();
     }
+    else if (output[2] == "E" && output[3] == "R" && output[4] == "R" && output[5] == "O" && output[6] == "R") {
+        modal.style.display = "block"
+        modalText.innerHTML = output.replace("[ERROR] ", "")
+        clean_inputs();
+    }
+    update_table()
 }
+
 
 //Limpiar inputs
 function clean_inputs() {

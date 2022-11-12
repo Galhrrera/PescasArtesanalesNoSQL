@@ -56,13 +56,11 @@ function update_table() {
 
 // CREATE
 document.querySelector(".crud_create").onclick = function () {
-    alert(table_name)
     id_cuenca = document.getElementById("select_cuencas");
     id_metodo = document.getElementById("select_metodos");
     fecha = document.getElementById("input_fecha");
     peso = document.getElementById("input_peso");
     args = [id_cuenca.value, id_metodo.value, fecha.value, peso.value];
-    alert(args)
     if (!args[0] || !args[1] || !args[2] || !args[3]) {
         if(!args[0]) {
             modal.style.display = "block"
@@ -95,17 +93,12 @@ document.querySelector(".crud_create").onclick = function () {
                 "peso": peso.value
             }
 
-            eel.create(query, table_name);
-            update_table();
-            modal.style.display = "block"
-            modalText.innerHTML = "Pesca creada correctamente";
-            clean_inputs()
+            eel.create(query, table_name)(showModals);
         }
         catch (error) {
             console.log(error);
         }
     }
-
 }
 
 // UPDATE
@@ -117,7 +110,6 @@ document.querySelector(".crud_update").onclick = function () {
     update_new_fecha = document.getElementById("input_fecha_update");
     update_new_peso = document.getElementById("input_peso_update");
     update_args = [update_id_value, update_new_cuenca.value, update_new_metodo.value, update_new_fecha.value, update_new_peso.value];
-    alert(update_args)
     if (!update_args[0] || !update_args[1] || !update_args[2] || !update_args[3] || !update_args[4]) {
         if (!update_args[0]){
             modal.style.display = "block"
@@ -153,17 +145,13 @@ document.querySelector(".crud_update").onclick = function () {
             "peso": update_new_peso.value
         }
         try {
-            eel.update(update_id.value, argumentos, table_name);
-            update_table();
-            modal.style.display = "block"
-            modalText.innerHTML = "Pesca "+ update_args[0] +"  Actualizada correctamente";
+            eel.update(update_id.value, argumentos, table_name)(showModals);
         } catch (error) {
             console.log(error);
         }
     }
-    clean_inputs()
-
 }
+
 // DELETE
 document.querySelector(".crud_delete").onclick = function () {
     delete_id = document.getElementById("delete_id");
@@ -174,13 +162,23 @@ document.querySelector(".crud_delete").onclick = function () {
         clean_inputs()
     }
     else {
-        eel.delete(delete_id.value, table_name);
-        update_table();
-        modal.style.display = "block"
-        modalText.innerHTML = "Pesca "+delete_id.value+" eliminada correctamente";
-        clean_inputs()
+        eel.delete(delete_id.value, table_name)(showModals);
     }
-    clean_inputs()
+}
+
+//ShowModals
+function showModals(output){
+    if (output[2] == "M" && output[3] == "S" && output[4] == "G") {
+        modal.style.display = "block"
+        modalText.innerHTML = output.replace("[MSG] ", "");
+        clean_inputs();
+    }
+    else if (output[2] == "E" && output[3] == "R" && output[4] == "R" && output[5] == "O" && output[6] == "R") {
+        modal.style.display = "block"
+        modalText.innerHTML = output.replace("[ERROR] ", "")
+        clean_inputs();
+    }
+    update_table()
 }
 
 //ADICIONALES

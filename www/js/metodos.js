@@ -27,11 +27,7 @@ document.querySelector(".crud_create").onclick = function (){
             data = {
                 "metodo": create_name.value
             }
-            eel.create(data, table_name);
-            update_table();
-            modal.style.display = "block"
-            modalText.innerHTML = "Método creado correctamente";
-            clean_inputs();
+            eel.create(data, table_name)(showModals);
         } catch (error) {
             console.log(error)
         }
@@ -81,11 +77,7 @@ document.querySelector(".crud_update").onclick = function (){
             args_json = {
                 "metodo": update_new_name.value
             }
-            eel.update(update_id.value, args_json, table_name);
-            update_table();
-            modal.style.display = "block"
-            modalText.innerHTML = "Método: "+update_args[0]+ " actualizado correctamente";
-            clean_inputs();
+            eel.update(update_id.value, args_json, table_name)(showModals);
         } catch (error) {
             console.log(error);
         }
@@ -101,37 +93,25 @@ document.querySelector(".crud_delete").onclick = function (){
         clean_inputs();
     }
     else {
-        eel.delete(delete_id.value, table_name)(deleteRegistro);
+        eel.delete(delete_id.value, table_name)(showModals);
     }
 }
 
-function deleteRegistro(output) {
-    if (output != null) {
-        clean_inputs();
-        let array = output.split(" ");
-        array[0] = array[0].replace('"', '');
-        if (array[0] == "[ERROR]") {
-            modal.style.display = "block"
-            modalText.innerHTML = output;
-            clean_inputs();
-            return
-        }
-        else {
-            update_table();
-            modal.style.display = "block"
-            modalText.innerHTML = "Método " + delete_id.value + " eliminada correctamente";
-            clean_inputs();
-        }
-    }
-    else {
-        update_table();
+
+//ShowModals
+function showModals(output){
+    if (output[2] == "M" && output[3] == "S" && output[4] == "G") {
         modal.style.display = "block"
-        modalText.innerHTML = "Método " + delete_id.value + " eliminada correctamente";
+        modalText.innerHTML = output.replace("[MSG] ", "");
         clean_inputs();
     }
+    else if (output[2] == "E" && output[3] == "R" && output[4] == "R" && output[5] == "O" && output[6] == "R") {
+        modal.style.display = "block"
+        modalText.innerHTML = output.replace("[ERROR] ", "")
+        clean_inputs();
+    }
+    update_table()
 }
-
-
 
 //Limpiar inputs
 function clean_inputs() {
@@ -152,3 +132,4 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 }
+
